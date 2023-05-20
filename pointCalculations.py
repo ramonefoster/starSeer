@@ -12,18 +12,18 @@ class Calculations():
         """Calculates Azimuth and Elevation"""
         DEG = 180 / math.pi
         RAD = math.pi / 180.0
-        hour_angle = self.u.string_to_hours(ha) * 15 if not self.check_instance(ha) else ha
+        hour_angle = self.u.string_to_hours(ha) if not self.check_instance(ha) else ha
         declination = self.u.string_to_degrees(dec) if not self.check_instance(dec) else dec
         latitude = self.u.string_to_degrees(lat) if not self.check_instance(lat) else lat        
 
         #altitude calc
-        sinAltitude = (math.sin(declination * RAD)) * (math.sin(latitude * RAD)) + (math.cos(declination * RAD) * math.cos(latitude * RAD) * math.cos(hour_angle * RAD))
+        sinAltitude = (math.sin(declination * RAD)) * (math.sin(latitude * RAD)) + (math.cos(declination * RAD) * math.cos(latitude * RAD) * math.cos(hour_angle *15 *RAD))
         elevation = math.asin(sinAltitude) * DEG #altura em graus
         elevation = round(elevation, 2)
 
         #azimuth calc
-        y = -1 * math.sin(hour_angle * RAD)
-        x = (math.tan(declination * RAD) * math.cos(latitude * RAD)) - (math.cos(hour_angle * RAD) * math.sin(latitude * RAD))
+        y = -1 * math.sin(hour_angle * 15 * RAD)
+        x = (math.tan(declination * RAD) * math.cos(latitude * RAD)) - (math.cos(hour_angle *15 * RAD) * math.sin(latitude * RAD))
 
         #This AZposCalc is the initial AZ for dome positioning
         azimuth = math.atan2(y, x) * DEG
