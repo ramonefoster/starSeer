@@ -1,4 +1,51 @@
+import math
+
 class Utils():
+    def hours_to_string(self, hours, decimal_digits=0):
+        """
+        Converts Float Hour to string Hour, in format hh:mm:ss:cc
+        :param hours: Hours (float)
+        """
+        if not isinstance(hours, (int, float)):
+            raise ValueError("Hours must be a number.")
+        
+        sign = "-" if hours < 0 else "+"
+        hours = abs(hours)
+        whole_hours = int(hours)
+        fractional_hours = hours - whole_hours
+
+        minutes = int(fractional_hours * 60)
+        fractional_minutes = fractional_hours * 60 - minutes
+
+        seconds = int(fractional_minutes * 60)
+        fractional_seconds = fractional_minutes * 60 - seconds
+
+        seconds_str = f"{seconds:02}.{int(fractional_seconds * (10 ** decimal_digits)):02d}"
+
+        time_string = f"{sign}{whole_hours:02}:{minutes:02}:{seconds_str}"
+        
+        return time_string
+
+    def degrees_to_string(self, degrees):
+        """
+        Converts Degrees to string, in format dd:mm:ss:cc
+        :param hours: Degrees (float)
+        """
+        if not isinstance(degrees, (int, float)):
+            raise ValueError("Degrees must be a number.")
+
+        sign = "-" if degrees < 0 else "+"
+        degrees = abs(degrees)
+        degrees_int = int(degrees)
+        minutes = int((degrees - degrees_int) * 60)
+        seconds = int(((degrees - degrees_int) * 60 - minutes) * 60)
+        seconds_decimal = int((((degrees - degrees_int) * 60 - minutes) * 60 - seconds) * 100)
+
+        # Formated value
+        degrees_string = f'{sign}{degrees_int:02}:{minutes:02}:{seconds:02}.{seconds_decimal:02}'
+
+        return degrees_string
+
     def string_to_hours(self, time_string):
         """
         Converts Hours string to float

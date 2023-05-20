@@ -1,5 +1,5 @@
 import pandas as pd
-import csv, os
+import csv
 from pathlib import Path
 
 class DataManager():        
