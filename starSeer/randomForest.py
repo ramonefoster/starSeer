@@ -3,17 +3,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 
 import numpy as np
-import pandas as pd
 import pickle
 import joblib
 
-from pointCalculations import Calculations
-from dataGen import DataManager
+from starSeer.pointCalculations import Calculations
+from starSeer.dataGen import DataManager
 
 class RandomForest():
-    def __init__(self, latitude):
+    def __init__(self, latitude, path):
         self.latitude = latitude
-        self.manager = DataManager()
+        self.manager = DataManager(path)
         self.calculator = Calculations()
 
     def train(self):
@@ -22,13 +21,13 @@ class RandomForest():
         """
         X, Y = self.manager.read_data()
         X_train, X_test, Y_train, Y_teste = train_test_split(X, Y, test_size=0.2)
-        with open('rf_train_test.pkl', mode='wb') as f:
+        with open(r'starSeer\rf_train_test.pkl', mode='wb') as f:
             pickle.dump([X_train, X_test, Y_train, Y_teste], f)
 
         rf_regressor = RandomForestRegressor(max_depth=6, max_features='sqrt', max_leaf_nodes=9,
                         n_estimators=50)
         rf_regressor.fit(X_train.values, Y_train)
-        joblib.dump(rf_regressor, 'RFmodel.pkl')
+        joblib.dump(rf_regressor, r'starSeer\RFmodel.pkl')
         score = rf_regressor.score(X_train,Y_train)
         return round(score, 2)
 
@@ -39,7 +38,7 @@ class RandomForest():
         :param temp: Temperatura Graus Centigrados
         :return: ha e DEC previstos
         """
-        rf = joblib.load('RFmodel.pkl')
+        rf = joblib.load(r'starSeer\RFmodel.pkl')
 
         #PREVISAO
         temp = temp if isinstance(temp, (int, float)) else 15 

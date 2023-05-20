@@ -2,13 +2,16 @@ import pandas as pd
 import csv
 from pathlib import Path
 
-class DataManager():        
+class DataManager():
+    def __init__(self, path):
+        self.path = path       
+
     def read_data(self):
         """
         Le o arquivo CSV e separa as variaveis de interesse.
         :return: Dataframes X, Y
         """
-        dataframe = pd.read_csv("dataset.csv")
+        dataframe = pd.read_csv(self.path)
 
         X = dataframe[["azimuth", "elevation", "ah_star", "dec_star", "temperature"]]
         Y = dataframe[["err_ah", "err_dec"]]
@@ -19,7 +22,7 @@ class DataManager():
         """Cria novo arquivo CSV com Header"""
         headerList = ['ah_star', 'dec_star', 'ah_scope', 'dec_scope', 'err_ah', 'err_dec', 'elevation', 'azimuth', 'temperature']
 
-        with open(r"dataset.csv", 'w') as file:
+        with open(self.path, 'w') as file:
             dw = csv.DictWriter(file, delimiter=',', 
                                 fieldnames=headerList)
             dw.writeheader()
@@ -36,7 +39,7 @@ class DataManager():
         :param elevation: Elevacao do telescopio
         :param temperatura: Temperatura interna da cupula
         """
-        path_file = Path(r"dataset.csv")
+        path_file = Path(self.path)
         if not path_file.is_file():
             self.create_file()
 
@@ -49,6 +52,6 @@ class DataManager():
             'elevation':[elevation], 'azimuth': [azimuth], 'temperature': [temperature] }
 
         df = pd.DataFrame.from_dict(data=d)
-        df.to_csv(r"dataset.csv", mode='a', index=False, header=False)
+        df.to_csv(self.path, mode='a', index=False, header=False)
 
 

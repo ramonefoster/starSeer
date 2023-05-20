@@ -1,5 +1,5 @@
 import math
-from utils import Utils
+from starSeer.utils import Utils
 
 class Calculations():    
     def __init__(self):
