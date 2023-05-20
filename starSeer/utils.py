@@ -1,4 +1,3 @@
-import math
 
 class Utils():
     def hours_to_string(self, hours, decimal_digits=0):
