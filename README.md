@@ -7,7 +7,7 @@
 Is recomended to point to known star fields, center the star on the CCD/oculars and than register coordinates using <b>save_dataframe</b>. 60+ points is a good number of stars for a good model.
 </p>
 
-<h3>Study Case</h3>
+<h3>Case Study</h3>
 <p>Using a 0.4m Telescope with a Paramount ME mount at Pico dos Dias Observatory <b>(MPC 874)</b></p>
 <img src="graphs.png" alt="graphs">
 
