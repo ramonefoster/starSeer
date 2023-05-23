@@ -1,6 +1,6 @@
 
 <h1 align="center">StarSeer</h1>
-<h3 align="center">Neural Networks minimizing mount telescope pointing errors.</h3>
+<h3 align="center">Neural Networks minimizing telescope (mount) pointing errors.</h3>
 
 <h3>Pointing</h3>
 <p>
