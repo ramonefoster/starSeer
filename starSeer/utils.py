@@ -1,6 +1,43 @@
 
+import numpy as np
+import math
+from starSeer.constants import *
+
 class Utils():
-    def hours_to_string(self, hours, decimal_digits=0):
+    @staticmethod
+    def get_elevation_azimuth(ha, dec, latitude):
+        """Calculates Azimuth and Elevation
+        params: HourAngle, Declination, Latitude
+        return: Elevation, Azimuth
+        """ 
+        if not Utils.is_numeric(ha):
+            ha = Utils.hms_to_hours(ha)
+        if not Utils.is_numeric(dec):
+            dec = Utils.dms_to_degrees(dec)
+        if not Utils.is_numeric(latitude):
+            latitude = Utils.dms_to_degrees(latitude)
+
+        H = ha * 15
+
+        #altitude calc
+        sinAltitude = (math.sin(dec * DEG2RAD)) * (math.sin(latitude * DEG2RAD)) + (math.cos(dec * DEG2RAD) * math.cos(latitude * DEG2RAD) * math.cos(H * DEG2RAD))
+        elevation = math.asin(sinAltitude) * RAD2DEG #altura em graus
+        elevation = round(elevation, 2)
+
+        #azimuth calc
+        y = -1 * math.sin(H * DEG2RAD)
+        x = (math.tan(dec * DEG2RAD) * math.cos(latitude * DEG2RAD)) - (math.cos(H * DEG2RAD) * math.sin(latitude * DEG2RAD))
+
+        #This AZposCalc is the initial AZ for dome positioning
+        azimuth = math.atan2(y, x) * RAD2DEG
+
+        #converting neg values to pos
+        if (azimuth < 0) :
+            azimuth = azimuth + 360    
+
+        return elevation, azimuth
+    @staticmethod
+    def hours_to_string(hours, decimal_digits=0):
         """
         Converts Float Hour to string Hour, in format hh:mm:ss:cc
         :param hours: Hours (float)
@@ -25,7 +62,8 @@ class Utils():
         
         return time_string
 
-    def degrees_to_string(self, degrees):
+    @staticmethod
+    def degrees_to_string(degrees):
         """
         Converts Degrees to string, in format dd:mm:ss:cc
         :param hours: Degrees (float)
@@ -45,7 +83,8 @@ class Utils():
 
         return degrees_string
 
-    def string_to_hours(self, time_string):
+    @staticmethod
+    def hms_to_hours(time_string):
         """
         Converts Hours string to float
         :param time_string: Hours String (hh:mm:ss.ss)
@@ -76,7 +115,8 @@ class Utils():
         sign = -1 if "-" in time_string else 1
         return sign*total_hours
 
-    def string_to_degrees(self, degrees_string):
+    @staticmethod
+    def dms_to_degrees(degrees_string):
         """
         Converts Degrees string to float
         :param degrees_string: Degrees String (dd:mm:ss.ss)
@@ -106,4 +146,75 @@ class Utils():
 
         sign = -1 if "-" in degrees_string else 1
         return sign*degrees
+
+    @staticmethod
+    def is_numeric(input):
+        """
+        Check if the input is a numeric value.
+        Parameters:
+            input (int or float): The value to be checked.
+        Returns:
+            bool: True if the input is numeric (int or float), False otherwise.
+        """
+        if isinstance(input, (int, float)):
+            return True
+        else:
+            return False
+    
+    @staticmethod
+    def check_exists(path):
+        """
+        Check if a file or directory exists at the given path.
+        Parameters:
+            path (str): The path to check for existence.
+        Returns:
+            bool: True if a file or directory exists at the given path, False otherwise.
+        """
+        import os
+        if os.path.exists(path):
+            return True
+        else:
+            return False
+    
+    @staticmethod
+    def add_noise(df, noise_level=0.01):
+        noisy_df = df.copy()
+        for column in noisy_df.columns:
+            if np.issubdtype(noisy_df[column].dtype, np.number):
+                noise = np.random.normal(0, noise_level, noisy_df[column].shape)
+                noisy_df[column] = noisy_df[column] + noise
+        return noisy_df
+
+    @staticmethod
+    def check_format(input):
+        """
+        Check the format of a given input and extract components.
+
+        The expected format is 'x1:x2:x3' or 'x1 x2 x3',
+        where 'x1', 'x2', and 'x3' are separated by a colon (':') or a space (' ').
+
+        Parameters:
+            input (str): The input to be checked and parsed.
+
+        Returns:
+            False: If the input does not match the expected format.
+            list: A list containing the three components extracted from the input if the format is correct.
+        """
+        separators = [':', ' ']
+        separator = None
+        for sep in separators:
+            if sep in input:
+                separator = sep
+                break
+
+        if separator is None:
+            return False
+
+        components = input.split(separator)
+
+        # Check for correct format
+        if len(components) != 3:
+            return False
+        else:
+            return components
 

@@ -4,8 +4,8 @@ setup(
     name='starSeer',
     version='1.0',
     author='Ramon Gargalhone',
-    author_email='rgargalhone@lna.br',
-    description='Minimizing telescope (mounts) pointing errors using NN.',
+    author_email='ramonefoster@gmail.com',
+    description='Minimizing telescope (mounts) pointing errors using Machine Learning.',
     packages=['starSeer'],
     install_requires=[
         # List any dependencies your module requires
