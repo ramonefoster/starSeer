@@ -15,7 +15,7 @@ Is recomended to point to known star fields, center the star on the CCD/oculars 
 
 <h3>Coordinates needed | CSV header</h3>
 <p>
-ah_star,dec_star,ah_scope,dec_scope,err_ah,err_dec,elevation,azimuth,temperature
+ah_star,dec_star,ah_scope,dec_scope,err_ah,err_dec,elevation,azimuth,temperature,prev_ha,prev_dec
 </p>
 
 ## Prerequisites
