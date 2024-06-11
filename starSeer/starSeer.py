@@ -90,7 +90,7 @@ class StarSeer():
         scaler_Y = scalers['scaler_Y']
 
 
-        az, elevation = Utils.get_elevation_azimuth(coordinates["target_ha"], coordinates["target_dec"], coordinates["latitude"])
+        elevation, az = Utils.get_elevation_azimuth(coordinates["target_ha"], coordinates["target_dec"], coordinates["latitude"])
 
         dist_ha = coordinates["target_ha"] - coordinates["prev_ha"]
         dist_dec = coordinates["target_dec"] - coordinates["prev_dec"]
